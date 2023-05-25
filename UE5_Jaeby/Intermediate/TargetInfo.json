@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "UE5_Jaeby",
+			"Path": "D:\\after20220210\\UE5_Jaeby\\UE5_Jaeby\\Source\\UE5_Jaeby.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "UE5_JaebyEditor",
+			"Path": "D:\\after20220210\\UE5_Jaeby\\UE5_Jaeby\\Source\\UE5_JaebyEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

@@ -1,0 +1,17 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-UE5_Jaeby.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UE5_JaebyEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UnrealEditor\Development\UE5_Jaeby\UE5_Jaeby.init.gen.cpp.obj"
+"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UnrealEditor\Development\UE5_Jaeby\UE5_JaebyCharacter.gen.cpp.obj"
+"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UnrealEditor\Development\UE5_Jaeby\UE5_JaebyGameMode.gen.cpp.obj"
+"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UnrealEditor\Development\UE5_Jaeby\UE5_Jaeby.cpp.obj"
+"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UnrealEditor\Development\UE5_Jaeby\UE5_JaebyCharacter.cpp.obj"
+"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UnrealEditor\Development\UE5_Jaeby\UE5_JaebyGameMode.cpp.obj"
+"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UnrealEditor\Development\UE5_Jaeby\Default.rc2.res"
+/OUT:"D:\after20220210\UE5_Jaeby\UE5_Jaeby\Intermediate\Build\Win64\UnrealEditor\Development\UE5_Jaeby\UnrealEditor-UE5_Jaeby.lib"
