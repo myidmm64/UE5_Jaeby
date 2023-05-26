@@ -39,7 +39,8 @@ class AUE5_JaebyCharacter : public ACharacter
 
 public:
 	AUE5_JaebyCharacter();
-	
+
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 
@@ -67,6 +68,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = Move)
 		float moveAmount;
 	UPROPERTY(EditAnywhere, Category = Move)
-		float turnAmount;
+		float moveTime;
+private:
+	float timer = 0.0f;
+	FVector startVector;
+	FVector endVector;
+	bool isMoving = false;
+public:
+	void Move(float deltaTime);
+public:
+	bool GetIsMoving();
 };
 

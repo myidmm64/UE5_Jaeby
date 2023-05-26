@@ -19,11 +19,6 @@ AUE5_JaebyCharacter::AUE5_JaebyCharacter()
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
-	// Don't rotate when the controller rotates. Let that just affect the camera.
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
-
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 
@@ -45,16 +40,15 @@ AUE5_JaebyCharacter::AUE5_JaebyCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+void AUE5_JaebyCharacter::Tick(float DeltaTime)
+{
+	Move(DeltaTime);
+}
+
 void AUE5_JaebyCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, turnAmount, 0.0f); // ...at this rotation rate
-	GetCharacterMovement()->MaxWalkSpeed = moveAmount;
-	GetCharacterMovement()->JumpZVelocity = 700.f;
-	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
-	GetCharacterMovement()->BrakingDecelerationWalking = moveAmount;
 
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -64,6 +58,27 @@ void AUE5_JaebyCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+}
+
+void AUE5_JaebyCharacter::Move(float deltaTime)
+{
+	if (isMoving == false)
+		return;
+	if (timer >= 1.0f)
+	{
+		isMoving = false;
+		timer = 0.0f;
+		SetActorLocation(startVector + endVector);
+		return;
+	}
+
+	SetActorLocation(startVector + endVector * timer);
+	timer += deltaTime * (1 / moveTime);
+}
+
+bool AUE5_JaebyCharacter::GetIsMoving()
+{
+	return isMoving;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,11 +105,18 @@ void AUE5_JaebyCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 void AUE5_JaebyCharacter::Move(const FInputActionValue& Value)
 {
+	if (isMoving)
+		return;
+
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
-	MovementVector.Normalize();
 	FVector amount = GetActorForwardVector() * MovementVector.Y + GetActorRightVector() * MovementVector.X;
-	SetActorLocation(GetActorLocation() + amount * moveAmount);
+	amount.Normalize();
+	amount = amount * moveAmount;
+	startVector = GetActorLocation();
+	endVector = amount;
+	isMoving = true;
+	timer = 0.0f;
 }
 
 void AUE5_JaebyCharacter::Look(const FInputActionValue& Value)
