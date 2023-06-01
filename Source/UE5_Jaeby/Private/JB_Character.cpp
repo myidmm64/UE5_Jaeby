@@ -4,6 +4,8 @@
 #include "JB_Character.h"
 #include <Blueprint/AIBlueprintHelperLibrary.h>
 #include <EnhancedInputComponent.h>
+#include <Kismet/GameplayStatics.h>
+#include <JB_Enemy.h>
 
 // Sets default values
 AJB_Character::AJB_Character()
@@ -17,7 +19,6 @@ AJB_Character::AJB_Character()
 void AJB_Character::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
