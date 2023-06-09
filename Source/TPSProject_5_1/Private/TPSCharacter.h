@@ -33,8 +33,6 @@ public:
 	void TurnPitch(const FInputActionValue& Value);
 	void TurnYaw(const FInputActionValue& Value);
 	void InputFire(const FInputActionValue& Value);
-	void ChangeToGrenadeGun();
-	void ChangeToSniperGun();
 	// 스나이퍼 조준
 	void SniperZoomin(const FInputActionValue& Value);
 	// 달리기 이벤트 처리 함수
@@ -48,13 +46,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HP)
 	int hp = 0;
-	bool died = false;
-	bool bUsingGrenadeGun = true;
 	// 스나이퍼 조준 중인지 여부
 	bool bSniperZoomin = false;
 	// 걷기 속도
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
 	float walkSpeed = 200;
 	// 달리기 속도
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
 	float runSpeed = 600;
 
 #pragma region /* Component*/
@@ -64,9 +62,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* tpsCamComp;
-
-	UPROPERTY(VisibleAnywhere, Category = GunMesh)
-	class USkeletalMeshComponent* gunMeshComp;
 
 	UPROPERTY(VisibleAnywhere, Category = GunMesh)
 	class UStaticMeshComponent* sniperGunComp;
@@ -116,16 +111,7 @@ protected:
 	class UInputAction* turnYawAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* jumpAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* fireAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* grenadeGunAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* sniperGunAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* sniperZoominAction;
