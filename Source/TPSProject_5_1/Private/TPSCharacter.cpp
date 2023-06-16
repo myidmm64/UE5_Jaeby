@@ -8,11 +8,12 @@
 #include <Blueprint/UserWidget.h>
 #include <Kismet/GameplayStatics.h>
 #include "EnemyFSM.h"
-#include <GameFramework/CharacterMovementComponent.h>
+#include <GameFramework/CharacterMovementComponent.h> 
 #include "CharacterAnim.h"
 #include <EnhancedInputSubsystems.h>
 #include <EnhancedInputComponent.h>
 #include <CharacterAnim.h>
+#include <AIController.h>
 
 // Sets default values
 ATPSCharacter::ATPSCharacter()
@@ -45,9 +46,6 @@ ATPSCharacter::ATPSCharacter()
 		tpsCamComp->SetupAttachment(springArmComp);
 	}
 
-	// 2단 점프
-	JumpMaxCount = 2;
-
 	// 스나이퍼 건 컴포넌트 등록
 	sniperGunComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SniperGunComp"));
 	if (sniperGunComp)
@@ -64,9 +62,6 @@ ATPSCharacter::ATPSCharacter()
 			sniperGunComp->SetRelativeScale3D(FVector(0.15f));
 		}
 	}
-
-	// 초기 속도 설정
-	GetCharacterMovement()->MaxWalkSpeed = walkSpeed;
 
 	// 총알 사운드 가져오기
 	ConstructorHelpers::FObjectFinder<USoundBase> tempSound(TEXT("/Script/Engine.SoundWave'/Game/SniperGun/Rifle.Rifle'"));
@@ -97,6 +92,7 @@ void ATPSCharacter::BeginPlay()
 		sniperGunComp->SetVisibility(true);
 
 	hp = initialHP;
+	currentSpeed = walkSpeed;
 }
 
 // Called every frame
@@ -104,6 +100,7 @@ void ATPSCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Move(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -128,9 +125,11 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	{
 		// MoveForward
 		EnhancedInputComp->BindAction(moveForwardAction, ETriggerEvent::Triggered, this, &ATPSCharacter::MoveForward);
+		EnhancedInputComp->BindAction(moveForwardAction, ETriggerEvent::Completed, this, &ATPSCharacter::MoveInputReset);
 
 		// MoveRight
 		EnhancedInputComp->BindAction(moveRightAction, ETriggerEvent::Triggered, this, &ATPSCharacter::MoveRight);
+		EnhancedInputComp->BindAction(moveRightAction, ETriggerEvent::Completed, this, &ATPSCharacter::MoveInputReset);
 
 		// TurnPitch
 		EnhancedInputComp->BindAction(turnPitchAction, ETriggerEvent::Triggered, this, &ATPSCharacter::TurnPitch);
@@ -151,6 +150,9 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void ATPSCharacter::MoveForward(const FInputActionValue& Value)
 {
+	if (!Moveable() || moveInput)
+		return;
+	moveInput = true;
 	float Movement = Value.Get<float>();
 	if (Controller != nullptr)
 	{
@@ -159,12 +161,15 @@ void ATPSCharacter::MoveForward(const FInputActionValue& Value)
 
 		const FVector ForwardDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
-		AddMovementInput(ForwardDir, Movement);
+		MoveStart(GetActorLocation() + ForwardDir * Movement * currentSpeed);
 	}
 }
 
 void ATPSCharacter::MoveRight(const FInputActionValue& Value)
 {
+	if (!Moveable() || moveInput)
+		return;
+	moveInput = true;
 	float Movement = Value.Get<float>();
 	if (Controller != nullptr)
 	{
@@ -173,7 +178,7 @@ void ATPSCharacter::MoveRight(const FInputActionValue& Value)
 
 		const FVector RightDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		AddMovementInput(RightDir, Movement);
+		MoveStart(GetActorLocation() + RightDir * Movement * currentSpeed);
 	}
 }
 
@@ -197,6 +202,8 @@ void ATPSCharacter::TurnYaw(const FInputActionValue& Value)
 
 void ATPSCharacter::InputFire(const FInputActionValue& Value)
 {
+	if (!Moveable())
+		return;
 	// 총알 발사 사운드 재생
 	UGameplayStatics::PlaySound2D(GetWorld(), bulletSound);
 
@@ -271,19 +278,11 @@ void ATPSCharacter::SniperZoomin(const FInputActionValue& Value)
 
 void ATPSCharacter::InputRun(const FInputActionValue& Value)
 {
-	auto movement = GetCharacterMovement();
-	if (movement == nullptr)
-		return;
-
 	bool isRun = Value.Get<bool>();
 	if (isRun)
-	{
-		movement->MaxWalkSpeed = runSpeed;
-	}
+		currentSpeed = runSpeed;
 	else
-	{
-		movement->MaxWalkSpeed = walkSpeed;
-	}
+		currentSpeed = walkSpeed;
 }
 
 void ATPSCharacter::OnHitEvent()
@@ -310,5 +309,45 @@ void ATPSCharacter::OnGameOver()
 	APlayerController* t = Cast<APlayerController>(Controller);
 	t->SetShowMouseCursor(true);
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
+}
+
+void ATPSCharacter::Move(float deltaTime)
+{
+	if (isMoving == false)
+		return;
+	SetActorLocation(FMath::Lerp(startPosition, endPosition, moveTimer));
+	moveTimer += (1.0f / moveTime) * deltaTime;
+	if (moveTimer >= 1.0f)
+	{
+		SetActorLocation(endPosition);
+		MoveEnd();
+	}
+}
+
+void ATPSCharacter::MoveStart(FVector dir)
+{
+	MoveEnd();
+	isMoving = true;
+	startPosition = GetActorLocation();
+	endPosition = dir;
+	moveTimer = 0.0f;
+}
+
+void ATPSCharacter::MoveEnd()
+{
+	isMoving = false;
+	startPosition = FVector::ZeroVector;
+	endPosition = FVector::ZeroVector;
+	moveTimer = 0.0f;
+}
+
+bool ATPSCharacter::Moveable()
+{
+	return (!isMoving || moveTimer >= moveableRatio);
+}
+
+void ATPSCharacter::MoveInputReset()
+{
+	moveInput = false;
 }
 

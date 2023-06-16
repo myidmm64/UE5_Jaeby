@@ -40,7 +40,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = AnimEvent)
 	void OnHitEvent();
 	void OnGameOver();
+
+	void Move(float deltaTime);
+	void MoveStart(FVector dir);
+	void MoveEnd();
+	bool Moveable();
+	void MoveInputReset();
 public:
+	bool isMoving = false;
+	FVector startPosition;
+	FVector endPosition;
+	float moveTimer = 0.0f;
+	bool moveInput = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HP)
 	int initialHP = 5;
 
@@ -49,11 +61,16 @@ public:
 	// 스나이퍼 조준 중인지 여부
 	bool bSniperZoomin = false;
 	// 걷기 속도
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Moving)
 	float walkSpeed = 200;
 	// 달리기 속도
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Moving)
 	float runSpeed = 600;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Moving)
+	float moveTime = 0.2f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Moving)
+	float moveableRatio = 0.85f;
+	float currentSpeed = 200;
 
 #pragma region /* Component*/
 public:
