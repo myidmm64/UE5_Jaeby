@@ -93,6 +93,7 @@ void ATPSCharacter::BeginPlay()
 
 	hp = initialHP;
 	currentSpeed = walkSpeed;
+	currentBullet = initialBullet;
 }
 
 // Called every frame
@@ -131,6 +132,7 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComp->BindAction(moveRightAction, ETriggerEvent::Triggered, this, &ATPSCharacter::MoveRight);
 		EnhancedInputComp->BindAction(moveRightAction, ETriggerEvent::Completed, this, &ATPSCharacter::MoveInputReset);
 
+		EnhancedInputComp->BindAction(moveForceStopAction, ETriggerEvent::Triggered, this, &ATPSCharacter::MoveEnd);
 		// TurnPitch
 		EnhancedInputComp->BindAction(turnPitchAction, ETriggerEvent::Triggered, this, &ATPSCharacter::TurnPitch);
 
@@ -142,7 +144,6 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 		// SniperZoomin
 		EnhancedInputComp->BindAction(sniperZoominAction, ETriggerEvent::Triggered, this, &ATPSCharacter::SniperZoomin);
-
 		// RunAction
 		EnhancedInputComp->BindAction(runAction, ETriggerEvent::Triggered, this, &ATPSCharacter::InputRun);
 	}
@@ -202,8 +203,10 @@ void ATPSCharacter::TurnYaw(const FInputActionValue& Value)
 
 void ATPSCharacter::InputFire(const FInputActionValue& Value)
 {
-	if (!Moveable())
+	if (!Moveable() || currentBullet <= 0)
 		return;
+
+	currentBullet = FMath::Clamp(currentBullet - 1, 0, initialBullet);
 	// 총알 발사 사운드 재생
 	UGameplayStatics::PlaySound2D(GetWorld(), bulletSound);
 
@@ -331,6 +334,7 @@ void ATPSCharacter::MoveStart(FVector dir)
 	startPosition = GetActorLocation();
 	endPosition = dir;
 	moveTimer = 0.0f;
+	currentBullet = FMath::Clamp(currentBullet + 1, 0, initialBullet);
 }
 
 void ATPSCharacter::MoveEnd()

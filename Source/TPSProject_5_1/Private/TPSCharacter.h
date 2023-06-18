@@ -52,9 +52,15 @@ public:
 	FVector endPosition;
 	float moveTimer = 0.0f;
 	bool moveInput = false;
+	float currentSpeed = 200;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Bullet)
+	int currentBullet = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HP)
 	int initialHP = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Bullet)
+	int initialBullet = 6;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HP)
 	int hp = 0;
@@ -70,7 +76,6 @@ public:
 	float moveTime = 0.2f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Moving)
 	float moveableRatio = 0.85f;
-	float currentSpeed = 200;
 
 #pragma region /* Component*/
 public:
@@ -120,6 +125,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* moveRightAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* moveForceStopAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* turnPitchAction;
