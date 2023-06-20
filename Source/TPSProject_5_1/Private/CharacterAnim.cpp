@@ -17,12 +17,8 @@ void UCharacterAnim::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (player)
 	{
-		FVector velocity = player->GetVelocity();
-		FVector forward = player->GetActorForwardVector();
-		speed = FVector::DotProduct(forward, velocity);
-
-		FVector right = player->GetActorRightVector();
-		direction = FVector::DotProduct(right, velocity);
+		speed = player->speed;
+		direction = player->direction;
 
 		auto movement = player->GetCharacterMovement();
 		if (movement)

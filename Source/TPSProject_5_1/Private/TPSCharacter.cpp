@@ -163,6 +163,8 @@ void ATPSCharacter::MoveForward(const FInputActionValue& Value)
 		const FVector ForwardDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
 		MoveStart(GetActorLocation() + ForwardDir * Movement * currentSpeed);
+		direction = 0.0f;
+		speed = FMath::RoundToInt(Movement) * 600.0f;
 	}
 }
 
@@ -180,6 +182,8 @@ void ATPSCharacter::MoveRight(const FInputActionValue& Value)
 		const FVector RightDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 		MoveStart(GetActorLocation() + RightDir * Movement * currentSpeed);
+		speed = 0.0f;
+		direction = FMath::RoundToInt(Movement) * 600.0f;
 	}
 }
 
@@ -343,6 +347,8 @@ void ATPSCharacter::MoveEnd()
 	startPosition = FVector::ZeroVector;
 	endPosition = FVector::ZeroVector;
 	moveTimer = 0.0f;
+	speed = 0.0f;
+	direction = 0.0f;
 }
 
 bool ATPSCharacter::Moveable()

@@ -77,6 +77,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Moving)
 	float moveableRatio = 0.85f;
 
+	//animation
+	float speed = 0.0f;
+	float direction = 0.0f;
 #pragma region /* Component*/
 public:
 	UPROPERTY(VisibleAnywhere, Category = Camera)

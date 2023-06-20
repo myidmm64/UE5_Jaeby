@@ -156,6 +156,9 @@ void UEnemyFSM::DieState()
 void UEnemyFSM::OnDamageProcess()
 {
 	// 체력 감소
+	if (hp <= 0)
+		return;
+
 	hp--;
 
 	if (hp > 0)

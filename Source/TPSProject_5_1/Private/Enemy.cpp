@@ -24,7 +24,7 @@ AEnemy::AEnemy()
 	fsm = CreateDefaultSubobject<UEnemyFSM>(TEXT("FSM"));
 
 	// 애니메이션 블루프린트 클래스 할당
-	ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("/Script/Engine.AnimBlueprint'/Game/TPSContent/Blueprints/ABP_Enemy.ABP_Enemy_C'"));
+	ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("/Script/Engine.AnimBlueprint'/Game/TPSContent/Animations/Enemy/ABP_Enemyenemy.ABP_Enemyenemy'"));
 
 	if (tempClass.Succeeded())
 	{
