@@ -62,7 +62,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Bullet)
 	int initialBullet = 6;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HP)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HP)
 	int hp = 0;
 	// 스나이퍼 조준 중인지 여부
 	bool bSniperZoomin = false;
