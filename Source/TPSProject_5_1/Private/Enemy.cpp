@@ -11,25 +11,25 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// 스켈레탈 메시 데이터 로드
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Enemy/Model/vampire_a_lusth.vampire_a_lusth'"));
+	/*ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Enemy/Model/vampire_a_lusth.vampire_a_lusth'"));
 
 	if (tempMesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(tempMesh.Object);
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
 		GetMesh()->SetRelativeScale3D(FVector(0.84f));
-	}
+	}*/
 
 	// EnemyFSM 컴포넌트 추가
 	fsm = CreateDefaultSubobject<UEnemyFSM>(TEXT("FSM"));
 
 	// 애니메이션 블루프린트 클래스 할당
-	ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("/Script/Engine.AnimBlueprint'/Game/TPSContent/Animations/Enemy/ABP_Enemyenemy.ABP_Enemyenemy'"));
+	/*ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("/Script/Engine.AnimBlueprint'/Game/TPSContent/Animations/Enemy/ABP_Enemyenemy.ABP_Enemyenemy'"));
 
 	if (tempClass.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
-	}
+	}*/
 }
 
 // Called when the game starts or when spawned

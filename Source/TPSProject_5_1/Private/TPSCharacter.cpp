@@ -22,13 +22,13 @@ ATPSCharacter::ATPSCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// 스켈레탈메시 데이터 로드
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> TempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
+	/*ConstructorHelpers::FObjectFinder<USkeletalMesh> TempMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
 
 	if (TempMesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(TempMesh.Object);
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90), FRotator(0, -90, 0));
-	}
+	}*/
 
 	// 카메라의 부모 컴포넌트 생성
 	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
@@ -309,6 +309,11 @@ void ATPSCharacter::OnHitEvent()
 	{
 		OnGameOver();
 	}
+}
+
+void ATPSCharacter::AddScore(int value)
+{
+	score += value;
 }
 
 void ATPSCharacter::OnGameOver()

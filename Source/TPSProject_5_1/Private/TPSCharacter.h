@@ -39,6 +39,8 @@ public:
 	void InputRun(const FInputActionValue& Value);
 	UFUNCTION(BlueprintCallable, Category = AnimEvent)
 	void OnHitEvent();
+	UFUNCTION(BlueprintCallable, Category = ScoreEvent)
+	void AddScore(int value);
 	void OnGameOver();
 
 	void Move(float deltaTime);
@@ -76,6 +78,9 @@ public:
 	float moveTime = 0.2f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Moving)
 	float moveableRatio = 0.85f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Score)
+	int score = 0;
 
 	//animation
 	float speed = 0.0f;
