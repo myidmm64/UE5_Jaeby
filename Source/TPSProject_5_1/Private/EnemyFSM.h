@@ -64,6 +64,7 @@ public:
 	// 대상
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = FSM)
 	class ATPSCharacter* target;
+	float speedScale = 1.0f;
 
 	// 소유 액터
 	class AEnemy* me;

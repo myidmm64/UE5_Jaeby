@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TPSCharacter.h"
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
@@ -26,6 +27,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category = Init)
+	void InitEnemy(ATPSCharacter* target, float speed);
 public:
 	// 적 AI 관련 컴포넌트 클래스
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSMComp)

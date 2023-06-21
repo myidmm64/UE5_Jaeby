@@ -25,8 +25,8 @@ void UEnemyFSM::BeginPlay()
 	Super::BeginPlay();
 
 	// 월드에서 TPSCharacter 가져오기
-	auto actor = UGameplayStatics::GetActorOfClass(GetWorld(), ATPSCharacter::StaticClass());
-	target = Cast<ATPSCharacter>(actor);
+	//auto actor = UGameplayStatics::GetActorOfClass(GetWorld(), ATPSCharacter::StaticClass());
+	//target = Cast<ATPSCharacter>(actor);
 
 	// 소유 객체 가져오기
 	me = Cast<AEnemy>(GetOwner());
@@ -39,6 +39,9 @@ void UEnemyFSM::BeginPlay()
 // Called every frame
 void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
+	if (target == nullptr)
+		return;
+
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	switch (mState)
@@ -88,7 +91,7 @@ void UEnemyFSM::MoveState()
 	// 방향
 	FVector dir = dest - me->GetActorLocation();
 	// 방향으로 이동
-	me->AddMovementInput(dir.GetSafeNormal());
+	me->AddMovementInput(dir.GetSafeNormal(), speedScale, true);
 
 	if (dir.Size() < attackRange)
 	{

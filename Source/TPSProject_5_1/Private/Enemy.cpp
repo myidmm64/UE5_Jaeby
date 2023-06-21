@@ -53,3 +53,9 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AEnemy::InitEnemy(ATPSCharacter* target, float speed)
+{
+	fsm->target = target;
+	fsm->speedScale = speed;
+}
+
