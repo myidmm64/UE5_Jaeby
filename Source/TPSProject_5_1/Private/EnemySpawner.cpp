@@ -41,6 +41,7 @@ void AEnemySpawner::SpawnEnemy()
 {
 	FVector spawnLocation = FVector::ZeroVector;
 	spawnLocation = UKismetMathLibrary::RandomUnitVector()* UKismetMathLibrary::RandomFloatInRange(0.0f, spawnRange);
+	spawnLocation += GetActorLocation();
 	spawnLocation.Z = zLocation;
 	FTransform spawnTransform = UKismetMathLibrary::MakeTransform(spawnLocation, FRotator::ZeroRotator);
 
